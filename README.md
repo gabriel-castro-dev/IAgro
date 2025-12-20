@@ -1,4 +1,4 @@
-# 🌱 IAagro - Sistema de Gestão Agronômica Inteligente
+# 🌱 IAgro - Sistema de Gestão Agronômica Inteligente
 
 **👥 Integrantes do Grupo:**
 - Gabriel Castro Inacio - 12300543  
@@ -14,7 +14,7 @@
 ---
 
 ## 📋 Sobre o Projeto
-O **IAagro** é uma plataforma digital desenvolvida com o objetivo de auxiliar agricultores de micro e médio porte no **controle, análise e tomada de decisão** sobre suas lavouras.  
+O **IAgro** é uma plataforma digital desenvolvida com o objetivo de auxiliar agricultores de micro e médio porte no **controle, análise e tomada de decisão** sobre suas lavouras.  
 A proposta central é oferecer uma ferramenta **inteligente, acessível e personalizada**, integrando:
 
 - Dados agronômicos  
@@ -36,7 +36,7 @@ O projeto visa **empoderar pequenos e médios produtores** com tecnologia de pon
 ---
 
 ## 🌾 Contexto
-O setor agrícola enfrenta desafios na adoção de tecnologia acessível. O IAagro busca:
+O setor agrícola enfrenta desafios na adoção de tecnologia acessível. O IAgro busca:
 
 - Reduzir a distância entre produtor e informação qualificada  
 - Facilitar o uso de **IA na agricultura de precisão**  
@@ -177,8 +177,8 @@ src/
 ### 🔧 Instalação
 1. Clone o repositório:
    ```
-   git clone https://github.com/gabriel-castro-dev/IAagro.git
-   cd IAagro
+   git clone https://github.com/gabriel-castro-dev/IAgro.git
+   cd IAgro
 2. Instale as dependências:
    ```
       npm install
@@ -197,4 +197,4 @@ src/
       Acesse em: http://localhost:3000
 ```
 
-# 🌱 IAagro - Tecnologia a serviço da agricultura sustentável 🚀
+# 🌱 IAgro - Tecnologia a serviço da agricultura sustentável 🚀
