@@ -1,110 +1,144 @@
 import React, { useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { doSendPasswordResetEmail } from '../../firebase/auth';
-import { useAuth } from '../../authContext';
-import styles from './EsqueciSenha.module.css';
+import AuthShell from './AuthShell';
+import { Button, TextField, InlineAlert } from '../ui';
+import { LuArrowLeft, LuShieldCheck } from '../ui/icons';
+import form from './authForm.module.css';
 
 const EsqueciSenha = () => {
-    const { userLoggedIn } = useAuth();
-    const [email, setEmail] = useState('');
-    const [isResetting, setIsResetting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
+  const [email, setEmail] = useState('');
+  const [isResetting, setIsResetting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [sent, setSent] = useState(false);
+  const [sentTo, setSentTo] = useState('');
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        setErrorMessage('');
-        setSuccessMessage('');
-        
-        if (!email) {
-            setErrorMessage('Por favor, informe seu email.');
-            return;
-        }
-        
-        if (isResetting) return;
-        setIsResetting(true);
-        
-        try {
-            // Envia diretamente o email de recuperação
-            // O Firebase automaticamente retorna erro se o email não existir
-            await doSendPasswordResetEmail(email);
-            setSuccessMessage('Email de recuperação enviado! Verifique sua caixa de entrada.');
-            setEmail(''); // Limpa o campo após envio bem-sucedido
-        } catch (error) {
-            console.log('Erro completo:', error); // Para debug
-            
-            // Tratamento de erros específicos do Firebase
-            switch (error.code) {
-                case 'auth/user-not-found':
-                    setErrorMessage('Este email não está cadastrado em nosso sistema.');
-                    break;
-                case 'auth/invalid-email':
-                    setErrorMessage('Email inválido. Verifique o formato do email.');
-                    break;
-                case 'auth/too-many-requests':
-                    setErrorMessage('Muitas tentativas. Tente novamente mais tarde.');
-                    break;
-                case 'auth/network-request-failed':
-                    setErrorMessage('Erro de conexão. Verifique sua internet.');
-                    break;
-                default:
-                    setErrorMessage('Erro ao enviar email de recuperação. Tente novamente.');
-                    console.error('Erro não tratado:', error);
-            }
-        } finally {
-            setIsResetting(false);
-        }
-    };
+  const submit = async (targetEmail) => {
+    if (isResetting) return;
+    setErrorMessage('');
 
-    return (
+    if (!isValidEmail(targetEmail)) {
+      setErrorMessage('Informe um e-mail válido.');
+      return;
+    }
+
+    setIsResetting(true);
+    try {
+      await doSendPasswordResetEmail(targetEmail);
+      setSentTo(targetEmail);
+      setSent(true);
+    } catch (error) {
+      switch (error.code) {
+        // Não revelar se a conta existe: usuário inexistente também mostra sucesso.
+        case 'auth/user-not-found':
+          setSentTo(targetEmail);
+          setSent(true);
+          break;
+        case 'auth/invalid-email':
+          setErrorMessage('E-mail inválido. Verifique o formato.');
+          break;
+        case 'auth/too-many-requests':
+          setErrorMessage('Muitas tentativas. Tente novamente mais tarde.');
+          break;
+        case 'auth/network-request-failed':
+          setErrorMessage('Falha de conexão. Verifique sua internet.');
+          break;
+        default:
+          setErrorMessage('Não foi possível enviar agora. Tente novamente.');
+      }
+    } finally {
+      setIsResetting(false);
+    }
+  };
+
+  return (
+    <AuthShell tagline="Tecnologia para decisões que respeitam o campo.">
+      <Link to="/" className={form.backLink}>
+        <LuArrowLeft size={18} aria-hidden="true" />
+        Voltar ao login
+      </Link>
+
+      {sent ? (
         <>
-          
-            
-            <div className={styles.container}>
-                <div className={styles.left}>
-                    <h1>ESQUECEU A SENHA?</h1>
-                    <p>Informe seu e-mail para receber instruções de recuperação</p>
-                    <div className={styles.buttonGroup}>
-                        <Link to="/" className={styles.backButton}>Voltar ao login</Link>
-                    </div>
-                </div>
-                
-                <div className={styles.right}>
-                    <form onSubmit={onSubmit}>
-                        <div className={styles.formGroup}>
-                            <label className={styles.label}>Email</label>
-                            <input
-                                className={styles.input}
-                                type="email"
-                                placeholder="Digite seu email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-                        
-                        <button
-                            type="submit"
-                            className={styles.submitButton}
-                            disabled={isResetting}
-                        >
-                            {isResetting ? 'Enviando...' : 'Enviar recuperação'}
-                        </button>
-                        
-                        {/* Exibe mensagem de sucesso */}
-                        {successMessage && (
-                            <div className={styles.success}>{successMessage}</div>
-                        )}
-                        
-                        {/* Exibe mensagem de erro */}
-                        {errorMessage && (
-                            <div className={styles.error}>{errorMessage}</div>
-                        )}
-                    </form>
-                </div>
-            </div>
+          <span className={`${form.eyebrow} ${form.green}`}>Verifique seu e-mail</span>
+          <h1 className={form.title}>Link enviado</h1>
+          <p className={form.subtitle}>
+            Se houver uma conta associada a <strong>{maskEmail(sentTo)}</strong>,
+            você receberá um link seguro para criar uma nova senha.
+          </p>
+
+          <InlineAlert variant="success" className={form.form}>
+            O link expira em 60 minutos. Verifique também a caixa de spam.
+          </InlineAlert>
+
+          <div className={form.form}>
+            <Button
+              variant="secondary"
+              size="lg"
+              fullWidth
+              loading={isResetting}
+              onClick={() => submit(sentTo)}
+            >
+              Reenviar e-mail
+            </Button>
+            <Button as={Link} to="/" variant="ghost" size="lg" fullWidth>
+              Voltar ao login
+            </Button>
+          </div>
         </>
-    );
+      ) : (
+        <>
+          <span className={`${form.eyebrow} ${form.green}`}>Recuperar acesso</span>
+          <h1 className={form.title}>Esqueceu sua senha?</h1>
+          <p className={form.subtitle}>
+            Informe o e-mail da sua conta. Enviaremos um link seguro para criar
+            uma nova senha.
+          </p>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit(email);
+            }}
+            className={form.form}
+            noValidate
+          >
+            <TextField
+              label="E-mail"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="nome@exemplo.com"
+            />
+
+            {errorMessage && <InlineAlert variant="error">{errorMessage}</InlineAlert>}
+
+            <Button type="submit" size="lg" fullWidth loading={isResetting}>
+              {isResetting ? 'Enviando...' : 'Enviar link de recuperação'}
+            </Button>
+
+            <span className={form.hintRow}>
+              <LuShieldCheck size={18} aria-hidden="true" />
+              O link expira em 60 minutos.
+            </span>
+          </form>
+        </>
+      )}
+    </AuthShell>
+  );
 };
+
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+function maskEmail(value) {
+  const [user, domain] = value.split('@');
+  if (!domain) return value;
+  const visible = user.slice(0, 1);
+  return `${visible}${'*'.repeat(Math.max(user.length - 1, 1))}@${domain}`;
+}
 
 export default EsqueciSenha;

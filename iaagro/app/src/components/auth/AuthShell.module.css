@@ -1,0 +1,98 @@
+.shell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  background-color: var(--color-canvas);
+}
+
+/* Painel esquerdo (foto ou fundo floresta sólido) */
+.panel {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-12);
+  background-color: var(--color-forest-950);
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.panelScrim {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(12 48 39 / 0.42);
+}
+
+.panelContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 460px;
+}
+
+.tagline {
+  color: #f2f6ee;
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* Área do formulário */
+.formArea {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-12) clamp(var(--space-6), 6vw, 88px);
+}
+
+.compactBrand {
+  display: none;
+  margin-bottom: var(--space-8);
+}
+
+.formInner {
+  width: 100%;
+  max-width: 452px;
+  animation: authIn var(--dur-mid) var(--ease-standard) both;
+}
+
+@keyframes authIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet/mobile: remove painel, logo compacto no topo */
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .panel {
+    display: none;
+  }
+  .formArea {
+    justify-content: flex-start;
+    padding: var(--space-8) var(--space-5);
+  }
+  .compactBrand {
+    display: block;
+  }
+  .formInner {
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .formInner {
+    animation: none;
+  }
+}
