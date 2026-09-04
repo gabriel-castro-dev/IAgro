@@ -86,3 +86,6 @@ dist/
 # Arquivos de teste local
 test-results/
 playwright-report/
+
+# Build do app (monorepo)
+/app/build/
