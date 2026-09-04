@@ -7,6 +7,7 @@ import AppShell from './shell/AppShell';
 import Dashboard from './dashboard/Dashboard';
 import RegistroWizard from './registro/RegistroWizard';
 import Analises from './analises/Analises';
+import Historico from './historico/Historico';
 import { 
     getUserProfile, 
     saveUserProfile, 
@@ -1189,9 +1190,20 @@ const handleCEPChange = async (e) => {
 
                         {/* Histórico - permanece igual */}
                         {currentPage === 'historico' && (
+                            <Historico
+                                userId={currentUser?.uid}
+                                userName={profileSettings.nomeCompleto || userName}
+                                taskController={taskController}
+                                registros={filteredHistoricoData}
+                                loading={loadingHistorico}
+                                onNavigate={goToPage}
+                            />
+                        )}
+
+                        {false && (
                             <div className={styles.pageContent}>
                                 <div className={styles.historyContainer}>
-                                    <h2 className={styles.formTitle}>📊 Histórico de Produtividade</h2>
+                                    <h2 className={styles.formTitle}>Histórico de Produtividade</h2>
                                     
                                     {/* Filtros existentes... */}
                                     <form className={styles.filterForm} onSubmit={(e) => { e.preventDefault(); filterHistorico(); }}>

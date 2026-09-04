@@ -1,0 +1,30 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+.icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.green { background-color: #e0efe6; color: #1e5a44; }
+.orange { background-color: #f6e8d5; color: #99631d; }
+.blue { background-color: #dde8f2; color: #2f5a7a; }
+.brass { background-color: var(--color-brass-soft); color: #8a6d24; }
+.rust { background-color: #f2e0d8; color: #9c4a2b; }
+.danger { background-color: var(--color-danger-soft); color: #8f2c20; }
+.success { background-color: #e0efe6; color: #1e5a44; }
+.neutral { background-color: var(--color-surface-muted); color: var(--color-ink-muted); }
