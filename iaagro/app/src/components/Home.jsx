@@ -6,6 +6,7 @@ import ChatBot from './chatbot/ChatBot.jsx';
 import AppShell from './shell/AppShell';
 import Dashboard from './dashboard/Dashboard';
 import RegistroWizard from './registro/RegistroWizard';
+import Analises from './analises/Analises';
 import { 
     getUserProfile, 
     saveUserProfile, 
@@ -993,8 +994,16 @@ const handleCEPChange = async (e) => {
                             </div>
                         )}
 
-                        {/* ANÁLISES COM CLIMA + GRÁFICOS */}
                         {currentPage === 'analises' && (
+                            <Analises
+                                profile={profileSettings}
+                                historico={historicoData}
+                                onNavigate={goToPage}
+                            />
+                        )}
+
+                        {/* ANÁLISES COM CLIMA + GRÁFICOS (legado) */}
+                        {false && (
                             <div className={styles.pageContent}>
                                 <div className={styles.analyticsContainer}>
                                     <h2 className={styles.formTitle}>Análises Agronômicas</h2>
