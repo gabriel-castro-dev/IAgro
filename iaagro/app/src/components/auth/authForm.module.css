@@ -1,0 +1,144 @@
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-forest-800);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: var(--space-6);
+}
+.backLink:hover {
+  text-decoration: none;
+  color: var(--color-forest-900);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+.eyebrow.brass {
+  color: var(--color-brass);
+}
+.eyebrow.green {
+  color: var(--color-forest-800);
+}
+
+.title {
+  font-size: clamp(30px, 3.4vw, 40px);
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: var(--space-3);
+  font-size: 16px;
+  color: var(--color-ink-muted);
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin-top: var(--space-8);
+}
+
+/* Duas colunas quando há largura (ex.: senhas no cadastro) */
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+@media (max-width: 560px) {
+  .row2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Linha auxiliar (lembrar / esqueci) */
+.between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.mutedLink {
+  color: var(--color-forest-800);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Dica com ícone (ex.: "Use 8+ caracteres", "expira em 60 min") */
+.hintRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  color: var(--color-ink-muted);
+}
+.hintRow svg {
+  color: var(--color-moss);
+  flex-shrink: 0;
+}
+
+/* Separador "ou" */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-ink-muted);
+  font-size: 14px;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border);
+}
+
+/* Rodapé "já tem conta? / criar conta" */
+.footerPrompt {
+  margin-top: var(--space-6);
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-ink-muted);
+}
+.footerPrompt a {
+  color: var(--color-forest-800);
+  font-weight: 600;
+  margin-left: var(--space-1);
+}
+
+/* Checklist reativo de requisitos de senha */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: var(--space-1) 0;
+}
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  color: var(--color-ink-muted);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+.checkItem svg {
+  flex-shrink: 0;
+  color: var(--color-border);
+}
+.checkItem.met {
+  color: var(--color-ink);
+}
+.checkItem.met svg {
+  color: var(--color-success);
+}
