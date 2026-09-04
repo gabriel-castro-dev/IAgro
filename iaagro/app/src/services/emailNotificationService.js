@@ -15,14 +15,28 @@ const EMAILJS_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
 const EMAILJS_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
 const EMAILJS_PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
 
-// Inicializar EmailJS
-emailjs.init(EMAILJS_PUBLIC_KEY);
+const isEmailConfigured = Boolean(EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_PUBLIC_KEY);
+
+// Inicializar EmailJS apenas se configurado (evita init com undefined)
+if (isEmailConfigured) {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+} else {
+    console.warn('⚠️ EmailJS não configurado. Defina REACT_APP_EMAILJS_SERVICE_ID, _TEMPLATE_ID e _PUBLIC_KEY no .env');
+}
 
 /**
  * Verificar tarefas que vencem em 24h e enviar email (CORRIGIDA)
  */
 export const checkAndSendTaskReminders = async (userId) => {
     try {
+        if (!isEmailConfigured) {
+            return {
+                success: false,
+                error: 'Serviço de e-mail não configurado.',
+                message: 'EmailJS não configurado no .env'
+            };
+        }
+
         console.log('🔔 Verificando tarefas para notificação...');
 
         const now = new Date();
@@ -258,6 +272,10 @@ const formatDate = (dateString) => {
  */
 export const sendTestEmail = async (userEmail, userName) => {
     try {
+        if (!isEmailConfigured) {
+            return { success: false, error: 'EmailJS não configurado no .env' };
+        }
+
         const mockTasks = [
             {
                 id: 'test1',

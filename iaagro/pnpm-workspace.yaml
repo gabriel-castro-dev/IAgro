@@ -1,0 +1,10 @@
+packages:
+  - app
+  - server
+
+# Build scripts opcionais de subdependências (não são necessários para o build do app).
+allowBuilds:
+  '@firebase/util': false
+  core-js: false
+  core-js-pure: false
+  protobufjs: false

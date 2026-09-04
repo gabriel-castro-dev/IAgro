@@ -28,6 +28,54 @@ const cleanCityName = (cityName) => {
 };
 
 /**
+ * Mapeia a resposta "current weather" da OpenWeather para o formato do app
+ */
+const mapCurrentWeather = (data) => ({
+    city: data.name,
+    country: data.sys.country,
+    temp: Math.round(data.main.temp),
+    tempMax: Math.round(data.main.temp_max),
+    tempMin: Math.round(data.main.temp_min),
+    description: data.weather[0].description,
+    tempIcon: data.weather[0].icon,
+    windSpeed: data.wind.speed,
+    humidity: data.main.humidity,
+    pressure: data.main.pressure,
+    visibility: data.visibility / 1000, // em km
+    sunrise: new Date(data.sys.sunrise * 1000),
+    sunset: new Date(data.sys.sunset * 1000),
+    coordinates: {
+        lat: data.coord.lat,
+        lon: data.coord.lon
+    }
+});
+
+/**
+ * Busca "current weather" na OpenWeather e trata erros de forma consistente.
+ * Lança Error com mensagem amigável (inclui caso 401 = chave inválida).
+ */
+const fetchCurrentWeather = async (url) => {
+    let response;
+    try {
+        response = await fetch(url);
+    } catch (networkError) {
+        throw new Error('Falha de conexão ao buscar o clima. Verifique sua internet.');
+    }
+
+    const data = await response.json().catch(() => ({}));
+
+    if (Number(data.cod) === 401) {
+        throw new Error('Chave da API de clima inválida (401). Verifique REACT_APP_WEATHER_API_KEY no .env');
+    }
+
+    if (Number(data.cod) !== 200) {
+        throw new Error(data.message || 'Não foi possível obter o clima');
+    }
+
+    return data;
+};
+
+/**
  * Busca dados do clima por nome da cidade
  * @param {string} cityName - Nome da cidade
  * @param {string} countryCode - Código do país (opcional, padrão: BR)
@@ -48,40 +96,14 @@ export const getWeatherByCity = async (cityName, countryCode = 'BR') => {
         const query = `${cleanedCity},${countryCode}`;
         
         const apiUrl = `${BASE_URL}/weather?q=${encodeURIComponent(query)}&appid=${API_KEY}&units=metric&lang=pt_br`;
-        
+
         console.log('📡 URL da API:', apiUrl.replace(API_KEY, 'API_KEY_HIDDEN'));
-        
-        const response = await fetch(apiUrl);
-        const data = await response.json();
 
-        console.log('📊 Resposta da API:', data);
-
-        if (data.cod !== 200) {
-            console.error('❌ Erro da API:', data.message);
-            throw new Error(data.message || 'Cidade não encontrada');
-        }
+        const data = await fetchCurrentWeather(apiUrl);
 
         return {
             success: true,
-            data: {
-                city: data.name,
-                country: data.sys.country,
-                temp: Math.round(data.main.temp),
-                tempMax: Math.round(data.main.temp_max),
-                tempMin: Math.round(data.main.temp_min),
-                description: data.weather[0].description,
-                tempIcon: data.weather[0].icon,
-                windSpeed: data.wind.speed,
-                humidity: data.main.humidity,
-                pressure: data.main.pressure,
-                visibility: data.visibility / 1000, // em km
-                sunrise: new Date(data.sys.sunrise * 1000),
-                sunset: new Date(data.sys.sunset * 1000),
-                coordinates: {
-                    lat: data.coord.lat,
-                    lon: data.coord.lon
-                }
-            }
+            data: mapCurrentWeather(data)
         };
     } catch (error) {
         console.error('❌ Erro ao buscar dados do clima:', error);
@@ -150,35 +172,12 @@ export const getWeatherByCoordinates = async (lat, lon) => {
         console.log('🌍 Buscando clima por coordenadas:', { lat, lon });
 
         const apiUrl = `${BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt_br`;
-        
-        const response = await fetch(apiUrl);
-        const data = await response.json();
 
-        if (data.cod !== 200) {
-            throw new Error(data.message || 'Localização não encontrada');
-        }
+        const data = await fetchCurrentWeather(apiUrl);
 
         return {
             success: true,
-            data: {
-                city: data.name,
-                country: data.sys.country,
-                temp: Math.round(data.main.temp),
-                tempMax: Math.round(data.main.temp_max),
-                tempMin: Math.round(data.main.temp_min),
-                description: data.weather[0].description,
-                tempIcon: data.weather[0].icon,
-                windSpeed: data.wind.speed,
-                humidity: data.main.humidity,
-                pressure: data.main.pressure,
-                visibility: data.visibility / 1000,
-                sunrise: new Date(data.sys.sunrise * 1000),
-                sunset: new Date(data.sys.sunset * 1000),
-                coordinates: {
-                    lat: data.coord.lat,
-                    lon: data.coord.lon
-                }
-            }
+            data: mapCurrentWeather(data)
         };
     } catch (error) {
         console.error('❌ Erro ao buscar clima por coordenadas:', error);

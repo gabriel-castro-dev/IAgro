@@ -26,11 +26,12 @@ export class WeatherController {
 
             // Tentar buscar no cache primeiro
             let weatherData = await this.weatherRepository.findByCity(cityName);
+            let fromCache = !!weatherData;
 
             if (!weatherData) {
                 // Se não está no cache, buscar na API
                 const apiResponse = await getWeatherByCity(cityName);
-                
+
                 if (!apiResponse.success) {
                     return {
                         success: false,
@@ -40,7 +41,8 @@ export class WeatherController {
 
                 // Converter para modelo
                 weatherData = WeatherData.fromAPIResponse(apiResponse.data);
-                
+                fromCache = false;
+
                 // Salvar no cache
                 await this.weatherRepository.saveWeatherCache(weatherData);
             }
@@ -53,7 +55,7 @@ export class WeatherController {
             return {
                 success: true,
                 data: weatherData,
-                fromCache: !!weatherData
+                fromCache
             };
         } catch (error) {
             console.error('Erro no WeatherController.getWeatherByCity:', error);
@@ -162,9 +164,8 @@ export class WeatherController {
 
             // Prioridade 1: CEP
             if (user.profile.cep) {
-                const cityName = `${user.profile.cidade}, ${user.profile.estado}`;
-                result = await this.getWeatherByCity(cityName, user.id);
-                
+                result = await this.getWeatherByCEP(user.profile.cep);
+
                 if (result.success) {
                     return {
                         ...result,

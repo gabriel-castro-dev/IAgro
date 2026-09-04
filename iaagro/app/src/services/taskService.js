@@ -8,12 +8,10 @@ import {
     getDocs, 
     updateDoc, 
     deleteDoc, 
-    doc, 
-    query, 
-    where, 
-    orderBy,
-    serverTimestamp,
-    Timestamp 
+    doc,
+    query,
+    where,
+    serverTimestamp
 } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 
@@ -73,28 +71,25 @@ export const getUserTasks = async (userId, filters = {}) => {
             throw new Error('ID do usuário não fornecido');
         }
 
-        let tasksQuery = query(
+        // Consulta apenas por userId para não exigir índice composto no Firestore.
+        // O filtro de "concluida" e a ordenação por dataLimite são feitos em memória.
+        const tasksQuery = query(
             collection(db, TASKS_COLLECTION),
-            where('userId', '==', userId),
-            orderBy('dataLimite', 'asc')
+            where('userId', '==', userId)
         );
 
-        // Aplicar filtros se fornecidos
-        if (filters.concluida !== undefined) {
-            tasksQuery = query(
-                collection(db, TASKS_COLLECTION),
-                where('userId', '==', userId),
-                where('concluida', '==', filters.concluida),
-                orderBy('dataLimite', 'asc')
-            );
-        }
-
         const snapshot = await getDocs(tasksQuery);
-        
-        const tasks = snapshot.docs.map(doc => ({
+
+        let tasks = snapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
         }));
+
+        if (filters.concluida !== undefined) {
+            tasks = tasks.filter(t => t.concluida === filters.concluida);
+        }
+
+        tasks.sort((a, b) => (a.dataLimite || '').localeCompare(b.dataLimite || ''));
 
         console.log(`✅ ${tasks.length} tarefas carregadas`);
         
