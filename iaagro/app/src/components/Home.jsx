@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../authContext';
 import { doSignOut } from '../firebase/auth';
 import { useNavigate, Navigate } from 'react-router-dom';
-import SuggestedItemsFooter from './Footer/SuggestedItemsFooter';
 import ChatBot from './chatbot/ChatBot.jsx';
+import AppShell from './shell/AppShell';
+import Dashboard from './dashboard/Dashboard';
 import { 
     getUserProfile, 
     saveUserProfile, 
@@ -720,110 +721,28 @@ const handleCEPChange = async (e) => {
     };
 
     return (
-        <div className={styles.homeWrapper} data-theme={theme}>
-            <div className={styles.container}>
-                {/* Sidebar - permanece igual */}
-                <nav className={styles.sidebar}>
-                    <div className={styles.logoContainer}>
-                        <img 
-                            src="/logoSite.png" 
-                            alt="IAgro - Inteligência Artificial Agrícola" 
-                            onError={(e) => {
-                                e.target.onerror = null;
-                                e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMTIwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjYTZiZDhjIiByeD0iOCIvPgo8dGV4dCB4PSI2MCIgeT0iNDUiIGZvcnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JQWdybzwvdGV4dD4KPHN2ZyB4PSIyMCIgeT0iMjAiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0id2hpdGUiPgo8cGF0aCBkPSJNMTIgMkw0IDlsOCA3IDgtN3ptMCAxNWMtNC40MiAwLTgtMy41OC04LThzMy41OC04IDgtOCA4IDMuNTggOCA4LTMuNTggOC04IDh6bTAtMTRjLTMuMzEgMC02IDIuNjktNiA2czIuNjkgNiA2IDYgNi0yLjY5IDYtNi0yLjY5LTYtNi02eiIvPgo8L3N2Zz4KPC9zdmc+';
-                            }}
-                        />
-                    </div>
-
-                    <ul className={styles.navigationList}>
-                        <li className={styles.navigationItem}>
-                            <button 
-                                onClick={() => goToPage('dashboard')}
-                                className={`${styles.navigationButton} ${currentPage === 'dashboard' ? styles.active : ''}`}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className={styles.navigationIcon}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z" />
-                                </svg>
-                                Dashboard
-                            </button>
-                        </li>
-                        <li className={styles.navigationItem}>
-                            <button 
-                                onClick={() => goToPage('meus-dados')}
-                                className={`${styles.navigationButton} ${currentPage === 'meus-dados' ? styles.active : ''}`}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className={styles.navigationIcon}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2h-5a2 2 0 01-2-2z" />
-                                </svg>
-                                Meus dados
-                            </button>
-                        </li>
-                        <li className={styles.navigationItem}>
-                            <button 
-                                onClick={() => goToPage('analises')}
-                                className={`${styles.navigationButton} ${currentPage === 'analises' ? styles.active : ''}`}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className={styles.navigationIcon}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 012 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                </svg>
-                                Análises
-                            </button>
-                        </li>
-                        <li className={styles.navigationItem}>
-                            <button 
-                                onClick={() => goToPage('historico')}
-                                className={`${styles.navigationButton} ${currentPage === 'historico' ? styles.active : ''}`}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className={styles.navigationIcon}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Histórico
-                            </button>
-                        </li>
-                        <li className={styles.navigationItem}>
-                            <button 
-                                onClick={() => goToPage('perfil')}
-                                className={`${styles.navigationButton} ${currentPage === 'perfil' ? styles.active : ''}`}
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className={styles.navigationIcon}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                                Perfil
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-
-                {/* Main content */}
-                <main className={styles.mainContent}>
-                    {/* Top bar - permanece igual */}
-                    <div className={styles.topBar}>
-                        <button 
-                            onClick={() => alert('Não há novas notificações no momento.')}
-                            className={styles.topButton}
-                            aria-label="Notificações"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                            </svg>
-                        </button>
-                        <button 
-                            onClick={() => goToPage('perfil')}
-                            className={styles.topButton}
-                            aria-label="Perfil"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                <circle cx="12" cy="7" r="4" />
-                            </svg>
-                        </button>
-                    </div>
-
+        <AppShell
+            activePage={currentPage}
+            onNavigate={goToPage}
+            userName={profileSettings.nomeCompleto || userName}
+            userRole={profileSettings.profissao || ''}
+            propertyName={profileSettings.propriedadeRural || profileSettings.cidade || ''}
+            theme={theme}
+            onLogout={handleLogout}
+        >
                     {/* Page content */}
                     <section className={styles.pageContent}>
-                        {/* Dashboard - COM DESTAQUE PARA CHATBOT */}
                         {currentPage === 'dashboard' && (
+                            <Dashboard
+                                userId={currentUser?.uid}
+                                userName={userName}
+                                profile={profileSettings}
+                                historico={historicoData}
+                                onNavigate={goToPage}
+                            />
+                        )}
+
+                        {false && (
                             <div className={styles.dashboardContainer}>
                                 <h1 className={styles.welcomeTitle}>
                                     🌾 Bem-vindo ao IAgro, {userName}!
@@ -1675,15 +1594,8 @@ const handleCEPChange = async (e) => {
                             </div>
                         )}
                     </section>
-                </main>
-            </div>
-            
-            {/* CHATBOT FLUTUANTE - Visível em TODAS as páginas */}
             <ChatBot />
-
-            {/* Footer com sugestões de compra */}
-            <SuggestedItemsFooter />
-        </div>
+        </AppShell>
     );
 };
 

@@ -1,9 +1,9 @@
 /**
  * Iconografia IAgro — família única (Lucide via react-icons/lu).
  * Importe ícones daqui para manter consistência de traço e permitir troca central.
- * Amplie conforme novas telas forem migradas.
  */
 export {
+  // base / auth
   LuEye,
   LuEyeOff,
   LuArrowLeft,
@@ -16,6 +16,7 @@ export {
   LuTriangleAlert,
   LuInfo,
   LuX,
+  // termos
   LuFileText,
   LuLaptop,
   LuLock,
@@ -23,4 +24,25 @@ export {
   LuMail,
   LuLeaf,
   LuChevronRight,
+  // app shell
+  LuHouse,
+  LuChartColumn,
+  LuHistory,
+  LuBell,
+  LuSearch,
+  LuLogOut,
+  LuChevronDown,
+  LuSparkles,
+  LuPlus,
+  LuWarehouse,
+  LuMenu,
+  // dashboard
+  LuSun,
+  LuWind,
+  LuDroplet,
+  LuTrendingUp,
+  LuDollarSign,
+  LuClipboardList,
+  LuFlaskConical,
+  LuCalendar,
 } from 'react-icons/lu';
