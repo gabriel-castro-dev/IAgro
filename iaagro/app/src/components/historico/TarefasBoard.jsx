@@ -35,7 +35,8 @@ const TarefasBoard = ({ userId, taskController, userName }) => {
     setTasks(res.success ? res.data : []);
     setLoading(false);
   };
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [userId]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { load(); }, [userId]);
 
   const filtered = useMemo(() => {
     return tasks.filter((t) => {

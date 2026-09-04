@@ -69,3 +69,25 @@
   --z-modal: 70;
   --z-toast: 80;
 }
+
+/* Tema escuro — sobrescreve apenas as cores; os componentes usam tokens. */
+:root[data-theme='dark'] {
+  --color-canvas: #0e1712;
+  --color-surface: #16211b;
+  --color-surface-muted: #1e2b24;
+  --color-ink: #eaf1ea;
+  --color-ink-muted: #9db0a3;
+  --color-sage: #24352b;
+  --color-border: #2b3a31;
+
+  --color-on-forest: #eaf1ea;
+  --color-on-forest-muted: #9db0a3;
+  --color-danger-soft: #3a221d;
+  --color-success-soft: #16342a;
+  --color-brass-soft: #34301f;
+
+  --shadow-float: 0 12px 36px rgb(0 0 0 / 0.4);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+
+  color-scheme: dark;
+}

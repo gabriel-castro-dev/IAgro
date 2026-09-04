@@ -93,7 +93,7 @@ const Home = () => {
     // NOVOS ESTADOS PARA CLIMA E CEP
     const [weatherData, setWeatherData] = useState(null);
     const [loadingWeather, setLoadingWeather] = useState(false);
-    const [weatherError, setWeatherError] = useState(null);
+    const [weatherError] = useState(null);
     const [loadingCEP, setLoadingCEP] = useState(false);
     const [cepError, setCepError] = useState(null);
 

@@ -13,7 +13,7 @@ import {
 import { Button, SelectField, Spinner } from '../ui';
 import {
   LuDownload, LuSun, LuDroplet, LuWind, LuGauge, LuCircleCheck,
-  LuTrendingUp, LuDollarSign, LuLeaf, LuClipboardList, LuChartPie,
+  LuTrendingUp, LuDollarSign, LuLeaf, LuClipboardList,
 } from '../ui/icons';
 import Calculadoras from './Calculadoras';
 import styles from './Analises.module.css';
