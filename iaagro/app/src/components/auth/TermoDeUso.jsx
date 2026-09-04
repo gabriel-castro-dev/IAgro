@@ -1,396 +1,353 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Button, Checkbox, Brand } from '../ui';
+import {
+  LuFileText,
+  LuLaptop,
+  LuShieldCheck,
+  LuLock,
+  LuUser,
+  LuMail,
+  LuLeaf,
+  LuX,
+} from '../ui/icons';
 import styles from './TermoDeUso.module.css';
 
+const SECTIONS = [
+  { id: 'visao-geral', label: 'Visão geral', icon: LuFileText },
+  { id: 'uso-plataforma', label: 'Uso da plataforma', icon: LuLaptop },
+  { id: 'dados-pessoais', label: 'Dados pessoais', icon: LuShieldCheck },
+  { id: 'seguranca', label: 'Segurança', icon: LuLock },
+  { id: 'seus-direitos', label: 'Seus direitos', icon: LuUser },
+  { id: 'contato', label: 'Contato', icon: LuMail },
+];
+
+const CONTACT_EMAIL = 'iaagronotification@gmail.com';
+
 const TermoDeUso = () => {
-    const navigate = useNavigate();
-    const [accepted, setAccepted] = useState(false);
-    const [scrollProgress, setScrollProgress] = useState(0);
+  const navigate = useNavigate();
+  const [accepted, setAccepted] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [activeId, setActiveId] = useState(SECTIONS[0].id);
+  const sectionRefs = useRef({});
 
-    const handleScroll = (e) => {
-        const element = e.target;
-        const scrollPercentage = (element.scrollLeft / (element.scrollWidth - element.clientWidth)) * 100;
-        setScrollProgress(Math.min(scrollPercentage, 100));
+  // Progresso por rolagem vertical da página
+  useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - doc.clientHeight;
+      const pct = scrollable > 0 ? (doc.scrollTop / scrollable) * 100 : 0;
+      setProgress(Math.min(Math.max(pct, 0), 100));
     };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
-    const handleAccept = () => {
-        if (accepted) {
-            localStorage.setItem('termsAccepted', 'true');
-            navigate('/cadastrar');
-        }
-    };
-
-    const handleDecline = () => {
-        navigate('/');
-    };
-
-    return (
-        <div className={styles.termoContainer}>
-            {/* Header */}
-            <div className={styles.termoHeader}>
-                <div className={styles.headerContent}>
-                    <h1 className={styles.mainTitle}>📋 Termos de Uso</h1>
-                    <p className={styles.headerSubtitle}>
-                        Leia atentamente as condições de uso do Sistema IAgro
-                    </p>
-                </div>
-            </div>
-
-            {/* Main Content */}
-            <div className={styles.termoWrapper}>
-                {/* Left Sidebar - Navigation */}
-                <aside className={styles.sidebar}>
-                    <nav className={styles.navMenu}>
-                        <h3 className={styles.navTitle}>📑 Seções</h3>
-                        <ul className={styles.navList}>
-                            <li>
-                                <a href="#introducao" className={styles.navLink}>
-                                    Introdução
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#condicoes" className={styles.navLink}>
-                                    Condições Gerais
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#coleta" className={styles.navLink}>
-                                    Coleta de Dados
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#finalidade" className={styles.navLink}>
-                                    Finalidade da Coleta
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#vedacoes" className={styles.navLink}>
-                                    Vedações
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#protecao" className={styles.navLink}>
-                                    Proteção de Dados
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#compartilhamento" className={styles.navLink}>
-                                    Compartilhamento
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#direitos" className={styles.navLink}>
-                                    Direitos do Titular
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </aside>
-
-                {/* Content Area */}
-                <main className={styles.termoContent} onScroll={handleScroll}>
-                    {/* Progress Bar */}
-                    <div className={styles.progressBar}>
-                        <div 
-                            className={styles.progressFill}
-                            style={{ width: `${scrollProgress}%` }}
-                        ></div>
-                    </div>
-
-                    {/* Introdução */}
-                    <section id="introducao" className={styles.termoSection}>
-                        <h2 className={styles.sectionTitle}>🌾 TERMO DE USO DO SISTEMA "IAgro"</h2>
-                        
-                        <div className={styles.introBox}>
-                            <p className={styles.termoText}>
-                                Este Termo de Uso ("Termo") é um acordo legal entre você, o(a) usuário(a) do sistema, e os 
-                                desenvolvedores do Projeto <strong>IAgro</strong>, um sistema de gestão agronômica inteligente 
-                                voltado para auxiliar agricultores de micro e médio porte no controle, análise e tomada de 
-                                decisão sobre suas lavouras.
-                            </p>
-                            
-                            <p className={styles.termoText}>
-                                Ao acessar ou utilizar o IAgro, você manifesta sua concordância integral com este Termo de Uso, 
-                                com a Política de Privacidade e com a <strong>Lei Geral de Proteção de Dados Pessoais 
-                                (Lei nº 13.709/2018 – LGPD)</strong>.
-                            </p>
-                            
-                            <p className={styles.alertBox}>
-                                <strong>⚠️ Atenção:</strong> Se você não concordar com estes termos, não deverá utilizar o sistema.
-                            </p>
-                        </div>
-                    </section>
-
-                    {/* Cláusula Primeira */}
-                    <section id="condicoes" className={styles.termoSection}>
-                        <h3 className={styles.clauseTitle}>📌 CLÁUSULA PRIMEIRA – DAS CONDIÇÕES GERAIS DE USO</h3>
-                        
-                        <div className={styles.clauseContent}>
-                            <p className={styles.termoText}>
-                                O IAgro é destinado a facilitar a gestão agrícola por meio de:
-                            </p>
-                            
-                            <ul className={styles.featureList}>
-                                <li>📊 Dashboards de análise e monitoramento</li>
-                                <li>🌦️ Alertas climáticos em tempo real</li>
-                                <li>📈 Relatórios personalizados de produtividade</li>
-                                <li>🤖 Recomendações técnicas baseadas em Inteligência Artificial</li>
-                                <li>📋 Histórico agrícola completo</li>
-                            </ul>
-                        </div>
-                    </section>
-
-                    {/* Cláusula Segunda */}
-                    <section id="coleta" className={styles.termoSection}>
-                        <h3 className={styles.clauseTitle}>📌 CLÁUSULA SEGUNDA – DA COLETA E USO DE DADOS PESSOAIS</h3>
-                        
-                        <div className={styles.clauseContent}>
-                            <p className={styles.termoText}>
-                                O usuário declara estar ciente da coleta e uso dos seguintes dados pelo IAgro:
-                            </p>
-                            
-                            <div className={styles.dataGrid}>
-                                <div className={styles.dataItem}>
-                                    <span className={styles.dataIcon}>👤</span>
-                                    <div>
-                                        <strong>Identificação</strong>
-                                        <p>Nome completo, e-mail e CPF para identificação e autenticação segura</p>
-                                    </div>
-                                </div>
-                                
-                                <div className={styles.dataItem}>
-                                    <span className={styles.dataIcon}>📍</span>
-                                    <div>
-                                        <strong>Localização</strong>
-                                        <p>Dados de localização e CEP para alertas específicos à região</p>
-                                    </div>
-                                </div>
-                                
-                                <div className={styles.dataItem}>
-                                    <span className={styles.dataIcon}>🌾</span>
-                                    <div>
-                                        <strong>Agrícola</strong>
-                                        <p>Culturas, produtividade, irrigação e insumos utilizados</p>
-                                    </div>
-                                </div>
-                                
-                                <div className={styles.dataItem}>
-                                    <span className={styles.dataIcon}>🌦️</span>
-                                    <div>
-                                        <strong>Climático</strong>
-                                        <p>Informações climáticas associadas ao perfil de cultivo</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Cláusula Terceira */}
-                    <section id="finalidade" className={styles.termoSection}>
-                        <h3 className={styles.clauseTitle}>📌 CLÁUSULA TERCEIRA – FINALIDADE DA COLETA</h3>
-                        
-                        <div className={styles.clauseContent}>
-                            <p className={styles.termoText}>
-                                Os dados pessoais coletados têm as seguintes finalidades:
-                            </p>
-                            
-                            <ul className={styles.purposeList}>
-                                <li>✓ Permitir o uso do sistema e autenticação do usuário</li>
-                                <li>✓ Gerar relatórios e recomendações técnicas personalizadas</li>
-                                <li>✓ Enviar notificações e alertas climáticos</li>
-                                <li>✓ Manter o histórico agrícola do usuário</li>
-                                <li>✓ Melhorar continuamente o desempenho e a precisão do sistema</li>
-                            </ul>
-                        </div>
-                    </section>
-
-                    {/* Cláusula Quarta */}
-                    <section id="vedacoes" className={styles.termoSection}>
-                        <h3 className={styles.clauseTitle}>📌 CLÁUSULA QUARTA – VEDAÇÕES DO USO</h3>
-                        
-                        <div className={styles.clauseContent}>
-                            <p className={styles.termoText}>
-                                O usuário compromete-se a <strong>não utilizar</strong> o IAgro para qualquer finalidade ilícita, incluindo:
-                            </p>
-                            
-                            <div className={styles.restrictionBox}>
-                                <ul className={styles.restrictionList}>
-                                    <li>❌ Envio de conteúdo ofensivo ou discriminatório</li>
-                                    <li>❌ Invasão ou acesso não autorizado a contas</li>
-                                    <li>❌ Violação de direitos de terceiros</li>
-                                    <li>❌ Transmissão de malware ou código malicioso</li>
-                                    <li>❌ Spam, phishing ou engenharia social</li>
-                                    <li>❌ Atividades comerciais não autorizadas</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Cláusula Quinta */}
-                    <section id="protecao" className={styles.termoSection}>
-                        <h3 className={styles.clauseTitle}>📌 CLÁUSULA QUINTA – DA PROTEÇÃO DOS DADOS</h3>
-                        
-                        <div className={styles.clauseContent}>
-                            <p className={styles.termoText}>
-                                O IAgro adota as seguintes medidas técnicas e administrativas para garantir a proteção dos dados:
-                            </p>
-                            
-                            <div className={styles.protectionGrid}>
-                                <div className={styles.protectionItem}>
-                                    <span className={styles.protectionIcon}>🔐</span>
-                                    <strong>Criptografia</strong>
-                                    <p>Dados criptografados e armazenamento seguro no Firebase</p>
-                                </div>
-                                
-                                <div className={styles.protectionItem}>
-                                    <span className={styles.protectionIcon}>🔑</span>
-                                    <strong>Autenticação</strong>
-                                    <p>Login via Firebase Authentication com segurança de ponta</p>
-                                </div>
-                                
-                                <div className={styles.protectionItem}>
-                                    <span className={styles.protectionIcon}>👁️</span>
-                                    <strong>Controle de Acesso</strong>
-                                    <p>Controle rigoroso de acesso e auditoria de atividades</p>
-                                </div>
-                                
-                                <div className={styles.protectionItem}>
-                                    <span className={styles.protectionIcon}>⚡</span>
-                                    <strong>Resposta a Incidentes</strong>
-                                    <p>Política ativa de resposta a incidentes de segurança</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Cláusula Sexta */}
-                    <section id="compartilhamento" className={styles.termoSection}>
-                        <h3 className={styles.clauseTitle}>📌 CLÁUSULA SEXTA – DO COMPARTILHAMENTO DE DADOS</h3>
-                        
-                        <div className={styles.clauseContent}>
-                            <p className={styles.termoText}>
-                                Os dados coletados <strong>não serão compartilhados com terceiros</strong>, salvo mediante:
-                            </p>
-                            
-                            <ul className={styles.sharingList}>
-                                <li>📋 Autorização expressa do titular</li>
-                                <li>⚖️ Obrigação legal ou decisão judicial</li>
-                                <li>🔧 Suporte técnico restrito e controlado</li>
-                            </ul>
-                            
-                            <p className={styles.warningText}>
-                                <strong>⚠️ Transparência:</strong> Qualquer compartilhamento será comunicado ao usuário 
-                                e realizado apenas com parceiros confiáveis que adotem medidas de segurança equivalentes.
-                            </p>
-                        </div>
-                    </section>
-
-                    {/* Cláusula Sétima */}
-                    <section id="direitos" className={styles.termoSection}>
-                        <h3 className={styles.clauseTitle}>📌 CLÁUSULA SÉTIMA – DOS DIREITOS DO TITULAR DOS DADOS</h3>
-                        
-                        <div className={styles.clauseContent}>
-                            <p className={styles.termoText}>
-                                O usuário poderá exercer seus direitos previstos na <strong>LGPD</strong>, incluindo:
-                            </p>
-                            
-                            <div className={styles.rightsGrid}>
-                                <div className={styles.rightItem}>
-                                    <h4>👁️ Direito de Acesso</h4>
-                                    <p>Solicitar acesso a todos os seus dados armazenados</p>
-                                </div>
-                                
-                                <div className={styles.rightItem}>
-                                    <h4>✏️ Direito de Retificação</h4>
-                                    <p>Corrigir informações incompletas ou inexatas</p>
-                                </div>
-                                
-                                <div className={styles.rightItem}>
-                                    <h4>🗑️ Direito de Exclusão</h4>
-                                    <p>Solicitar a exclusão de seus dados pessoais</p>
-                                </div>
-                                
-                                <div className={styles.rightItem}>
-                                    <h4>🔄 Revogação de Consentimento</h4>
-                                    <p>Revogar o consentimento dado anteriormente</p>
-                                </div>
-                                
-                                <div className={styles.rightItem}>
-                                    <h4>📊 Portabilidade de Dados</h4>
-                                    <p>Receber seus dados em formato estruturado</p>
-                                </div>
-                                
-                                <div className={styles.rightItem}>
-                                    <h4>ℹ️ Informações de Tratamento</h4>
-                                    <p>Solicitar informações sobre como seus dados são tratados</p>
-                                </div>
-                            </div>
-                            
-                            <div className={styles.contactBox}>
-                                <h4>📧 Canal de Contato LGPD:</h4>
-                                <p>
-                                    Para exercer qualquer um dos direitos acima, entre em contato conosco através do e-mail:
-                                </p>
-                                <a href="mailto:iaagronotification@gmail.com" className={styles.contactLink}>
-                                    iaagronotification@gmail.com
-                                </a>
-                                <p className={styles.responseTime}>
-                                    ⏱️ Prazo de resposta: até 15 dias úteis
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Final Section */}
-                    <section className={styles.termoSection}>
-                        <div className={styles.finalBox}>
-                            <h4>✅ Concordância</h4>
-                            <p>
-                                Ao utilizar o IAgro, você reconhece que leu, compreendeu e concorda com todos os termos 
-                                contidos neste Termo de Uso e na Política de Privacidade.
-                            </p>
-                            <p className={styles.lastUpdate}>
-                                <strong>Última atualização:</strong> {new Date().toLocaleDateString('pt-BR')}
-                            </p>
-                        </div>
-                    </section>
-                </main>
-            </div>
-
-            {/* Footer with Actions */}
-            <div className={styles.termoFooter}>
-                <div className={styles.footerContent}>
-                    <label className={styles.checkboxContainer}>
-                        <input
-                            type="checkbox"
-                            checked={accepted}
-                            onChange={(e) => setAccepted(e.target.checked)}
-                            className={styles.checkbox}
-                        />
-                        <span className={styles.checkboxLabel}>
-                            Eu li e concordo com os Termos de Uso e Política de Privacidade
-                        </span>
-                    </label>
-
-                    <div className={styles.actionButtons}>
-                        <button
-                            onClick={handleDecline}
-                            className={styles.declineButton}
-                        >
-                            ✕ Recusar
-                        </button>
-                        <button
-                            onClick={handleAccept}
-                            disabled={!accepted}
-                            className={styles.acceptButton}
-                        >
-                            ✓ Aceitar e Continuar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+  // Scrollspy: destaca a seção visível
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActiveId(visible[0].target.id);
+      },
+      { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
     );
+    SECTIONS.forEach((s) => {
+      const el = sectionRefs.current[s.id];
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  const goTo = (id) => {
+    sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleAccept = () => {
+    if (!accepted) return;
+    localStorage.setItem('termsAccepted', 'true');
+    navigate('/cadastrar');
+  };
+
+  const handleDecline = () => navigate('/');
+
+  const setRef = (id) => (el) => {
+    sectionRefs.current[id] = el;
+  };
+
+  const lastUpdate = new Date().toLocaleDateString('pt-BR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  return (
+    <div className={styles.page}>
+      <header className={styles.topbar}>
+        <div className={styles.breadcrumbGroup} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)' }}>
+          <Link to="/" className={styles.brandLink} aria-label="Início">
+            <Brand tone="dark" size="sm" />
+          </Link>
+          <nav className={styles.breadcrumb} aria-label="Trilha">
+            <Link to="/cadastrar">Criar conta</Link>
+            <span className={styles.crumbSep} aria-hidden="true">/</span>
+            <span className={styles.current} aria-current="page">Termos de Uso</span>
+          </nav>
+        </div>
+        <button type="button" className={styles.closeBtn} onClick={handleDecline}>
+          <LuX size={20} aria-hidden="true" />
+          Fechar
+        </button>
+      </header>
+
+      <div className={styles.progress} aria-hidden="true">
+        <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+      </div>
+
+      <div className={styles.wrapper}>
+        <aside className={styles.toc} aria-label="Sumário">
+          <ul className={styles.tocList}>
+            {SECTIONS.map((s) => {
+              const Icon = s.icon;
+              return (
+                <li key={s.id}>
+                  <button
+                    type="button"
+                    className={`${styles.tocLink} ${activeId === s.id ? styles.active : ''}`}
+                    aria-current={activeId === s.id ? 'true' : undefined}
+                    onClick={() => goTo(s.id)}
+                  >
+                    <Icon size={18} aria-hidden="true" />
+                    {s.label}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          <label className={styles.tocSelect}>
+            <span className="sr-only">Ir para a seção</span>
+            <select
+              value={activeId}
+              onChange={(e) => goTo(e.target.value)}
+              className={styles.tocSelectInput}
+            >
+              {SECTIONS.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </aside>
+
+        <article className={styles.doc}>
+          <span className={styles.eyebrow}>Legal</span>
+          <h1 className={styles.docTitle}>Termos de Uso e Privacidade</h1>
+          <p className={styles.meta}>
+            Última atualização: {lastUpdate} · Versão 2.0
+          </p>
+
+          <div className={styles.infoBand}>
+            <LuLeaf size={22} aria-hidden="true" />
+            Leia com atenção. Este documento explica como a plataforma funciona e
+            como seus dados são tratados.
+          </div>
+
+          <section id="visao-geral" ref={setRef('visao-geral')} className={styles.section}>
+            <h2 className={styles.sectionTitle}>1. Visão geral</h2>
+            <p>
+              Este Termo de Uso ("Termo") é um acordo legal entre você, o(a)
+              usuário(a) do sistema, e os desenvolvedores do Projeto{' '}
+              <strong>IAgro</strong>, um sistema de gestão agronômica inteligente
+              voltado para auxiliar agricultores de micro e médio porte no
+              controle, análise e tomada de decisão sobre suas lavouras.
+            </p>
+            <p>
+              Ao acessar ou utilizar o IAgro, você manifesta sua concordância
+              integral com este Termo de Uso, com a Política de Privacidade e com a{' '}
+              <strong>
+                Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 –
+                LGPD)
+              </strong>
+              . Se você não concordar com estes termos, não deverá utilizar o
+              sistema.
+            </p>
+          </section>
+
+          <section id="uso-plataforma" ref={setRef('uso-plataforma')} className={styles.section}>
+            <h2 className={styles.sectionTitle}>2. Uso da plataforma</h2>
+            <p>O IAgro é destinado a facilitar a gestão agrícola por meio de:</p>
+            <ul className={styles.list}>
+              <li>Dashboards de análise e monitoramento;</li>
+              <li>Alertas climáticos em tempo real;</li>
+              <li>Relatórios personalizados de produtividade;</li>
+              <li>Recomendações técnicas baseadas em Inteligência Artificial;</li>
+              <li>Histórico agrícola completo.</li>
+            </ul>
+
+            <h3 className={styles.subTitle}>Vedações do uso</h3>
+            <p>
+              O usuário compromete-se a <strong>não utilizar</strong> o IAgro para
+              qualquer finalidade ilícita, incluindo:
+            </p>
+            <ul className={styles.list}>
+              <li>Envio de conteúdo ofensivo ou discriminatório;</li>
+              <li>Invasão ou acesso não autorizado a contas;</li>
+              <li>Violação de direitos de terceiros;</li>
+              <li>Transmissão de malware ou código malicioso;</li>
+              <li>Spam, phishing ou engenharia social;</li>
+              <li>Atividades comerciais não autorizadas.</li>
+            </ul>
+          </section>
+
+          <section id="dados-pessoais" ref={setRef('dados-pessoais')} className={styles.section}>
+            <h2 className={styles.sectionTitle}>3. Dados pessoais e LGPD</h2>
+            <p>
+              O usuário declara estar ciente da coleta e uso dos seguintes dados
+              pelo IAgro:
+            </p>
+            <ul className={styles.list}>
+              <li>
+                <strong>Identificação:</strong> nome completo, e-mail e CPF para
+                identificação e autenticação segura;
+              </li>
+              <li>
+                <strong>Localização:</strong> dados de localização e CEP para
+                alertas específicos à região;
+              </li>
+              <li>
+                <strong>Agrícola:</strong> culturas, produtividade, irrigação e
+                insumos utilizados;
+              </li>
+              <li>
+                <strong>Climático:</strong> informações climáticas associadas ao
+                perfil de cultivo.
+              </li>
+            </ul>
+
+            <h3 className={styles.subTitle}>Finalidade da coleta</h3>
+            <ul className={styles.list}>
+              <li>Permitir o uso do sistema e autenticação do usuário;</li>
+              <li>Gerar relatórios e recomendações técnicas personalizadas;</li>
+              <li>Enviar notificações e alertas climáticos;</li>
+              <li>Manter o histórico agrícola do usuário;</li>
+              <li>Melhorar continuamente o desempenho e a precisão do sistema.</li>
+            </ul>
+          </section>
+
+          <section id="seguranca" ref={setRef('seguranca')} className={styles.section}>
+            <h2 className={styles.sectionTitle}>4. Segurança e compartilhamento</h2>
+            <p>
+              O IAgro adota medidas técnicas e administrativas para garantir a
+              proteção dos dados:
+            </p>
+            <ul className={styles.list}>
+              <li>
+                <strong>Criptografia:</strong> dados criptografados e armazenamento
+                seguro no Firebase;
+              </li>
+              <li>
+                <strong>Autenticação:</strong> login via Firebase Authentication;
+              </li>
+              <li>
+                <strong>Controle de acesso:</strong> controle rigoroso e auditoria
+                de atividades;
+              </li>
+              <li>
+                <strong>Resposta a incidentes:</strong> política ativa de resposta a
+                incidentes de segurança.
+              </li>
+            </ul>
+
+            <h3 className={styles.subTitle}>Compartilhamento de dados</h3>
+            <p>
+              Os dados coletados{' '}
+              <strong>não serão compartilhados com terceiros</strong>, salvo
+              mediante autorização expressa do titular, obrigação legal ou decisão
+              judicial, ou suporte técnico restrito e controlado. Qualquer
+              compartilhamento será comunicado ao usuário e realizado apenas com
+              parceiros que adotem medidas de segurança equivalentes.
+            </p>
+          </section>
+
+          <section id="seus-direitos" ref={setRef('seus-direitos')} className={styles.section}>
+            <h2 className={styles.sectionTitle}>5. Seus direitos</h2>
+            <p>
+              O usuário poderá exercer seus direitos previstos na{' '}
+              <strong>LGPD</strong>, incluindo:
+            </p>
+            <ul className={styles.list}>
+              <li>
+                <strong>Acesso:</strong> solicitar acesso a todos os seus dados
+                armazenados;
+              </li>
+              <li>
+                <strong>Retificação:</strong> corrigir informações incompletas ou
+                inexatas;
+              </li>
+              <li>
+                <strong>Exclusão:</strong> solicitar a exclusão de seus dados
+                pessoais;
+              </li>
+              <li>
+                <strong>Revogação de consentimento:</strong> revogar o consentimento
+                dado anteriormente;
+              </li>
+              <li>
+                <strong>Portabilidade:</strong> receber seus dados em formato
+                estruturado;
+              </li>
+              <li>
+                <strong>Informações de tratamento:</strong> saber como seus dados são
+                tratados.
+              </li>
+            </ul>
+          </section>
+
+          <section id="contato" ref={setRef('contato')} className={styles.section}>
+            <h2 className={styles.sectionTitle}>6. Contato</h2>
+            <p>
+              Ao utilizar o IAgro, você reconhece que leu, compreendeu e concorda
+              com todos os termos deste documento e da Política de Privacidade.
+            </p>
+            <div className={styles.contactCard}>
+              <strong>Canal de contato LGPD</strong>
+              <p style={{ margin: 'var(--space-2) 0 0' }}>
+                Para exercer qualquer um dos direitos acima, entre em contato pelo
+                e-mail abaixo. Prazo de resposta: até 15 dias úteis.
+              </p>
+              <a href={`mailto:${CONTACT_EMAIL}`} className={styles.contactLink}>
+                {CONTACT_EMAIL}
+              </a>
+            </div>
+          </section>
+        </article>
+      </div>
+
+      <div className={styles.consent}>
+        <div className={styles.consentInner}>
+          <Checkbox
+            checked={accepted}
+            onChange={(e) => setAccepted(e.target.checked)}
+          >
+            Li e concordo com os Termos de Uso e a Política de Privacidade
+          </Checkbox>
+          <div className={styles.consentActions}>
+            <Button variant="secondary" onClick={handleDecline}>
+              Recusar
+            </Button>
+            <Button onClick={handleAccept} disabled={!accepted}>
+              Aceitar e continuar
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default TermoDeUso;
