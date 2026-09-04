@@ -1,2 +1,4 @@
 # Ferramentas locais
 .serena/
+.vercel
+.env*
