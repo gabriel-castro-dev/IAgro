@@ -21,6 +21,9 @@
 .sidebarBrand {
   padding: var(--space-2) var(--space-2) var(--space-8);
 }
+.brandMark {
+  display: none;
+}
 
 .nav {
   display: flex;
@@ -239,9 +242,12 @@
   }
   .navLabel,
   .userMeta,
-  .sidebarBrand span span,
+  .brandFull,
   .propertyName {
     display: none;
+  }
+  .brandMark {
+    display: inline-block;
   }
   .navItem,
   .logout {

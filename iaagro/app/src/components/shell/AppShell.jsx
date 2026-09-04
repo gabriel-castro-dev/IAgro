@@ -48,7 +48,8 @@ const AppShell = ({
       {/* Sidebar (desktop / tablet) */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarBrand}>
-          <Brand tone="light" size="sm" />
+          <Brand tone="light" size="sm" className={styles.brandFull} />
+          <Brand tone="light" size="md" showText={false} className={styles.brandMark} />
         </div>
 
         <nav className={styles.nav} aria-label="Navegação principal">

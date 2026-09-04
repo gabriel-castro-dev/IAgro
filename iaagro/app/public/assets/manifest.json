@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "brand": {
+    "markSvg": "/assets/brand/logo-mark.svg",
+    "markPng": "/assets/brand/logo-mark-512.png",
+    "horizontalDarkSvg": "/assets/brand/logo-horizontal-dark.svg",
+    "horizontalDarkPng": "/assets/brand/logo-horizontal-dark-520.png",
+    "horizontalLightSvg": "/assets/brand/logo-horizontal-light.svg",
+    "horizontalLightPng": "/assets/brand/logo-horizontal-light-520.png",
+    "favicon": "/assets/brand/favicon.svg",
+    "appIcon192": "/assets/brand/app-icon-192.png",
+    "appIcon512": "/assets/brand/app-icon-512.png"
+  },
+  "backgrounds": {
+    "login": "/assets/backgrounds/auth-login-field.png",
+    "register": "/assets/backgrounds/auth-register-farmer.png",
+    "passwordRecovery": "/assets/backgrounds/auth-recovery-irrigation.png"
+  },
+  "icons": {
+    "assistant": "/assets/icons/assistant-leaf.svg",
+    "property": "/assets/icons/property-field.svg",
+    "crop": "/assets/icons/crop.svg",
+    "soil": "/assets/icons/soil.svg",
+    "irrigation": "/assets/icons/irrigation.svg",
+    "harvest": "/assets/icons/harvest.svg",
+    "weatherClear": "/assets/icons/weather-clear.svg"
+  },
+  "illustrations": {
+    "emptyField": "/assets/illustrations/empty-field.svg"
+  },
+  "textures": {
+    "fieldContours": "/assets/textures/field-contours.svg"
+  }
+}

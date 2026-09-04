@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Campo sem registros</title>
+  <desc id="desc">Ilustração abstrata de um campo aguardando novos dados.</desc>
+  <rect width="360" height="220" rx="20" fill="#EEF1E9"/>
+  <circle cx="285" cy="50" r="24" fill="#C89A3D" opacity=".78"/>
+  <path d="M0 137c61-35 121-39 180-11s119 24 180-15v109H0Z" fill="#DFE8DD"/>
+  <path d="M0 164c62-30 122-31 180-3s119 24 180-14" fill="none" stroke="#789269" stroke-width="3"/>
+  <path d="M0 190c62-25 122-26 180-2s119 21 180-12" fill="none" stroke="#164C3B" stroke-width="3" opacity=".7"/>
+  <g transform="translate(160 72)" fill="none" stroke="#164C3B" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 90V20" stroke-width="4"/>
+    <path d="M20 39C8 39 1 32-1 21c11.5-1 19.5 5 21 18Z" fill="#789269" stroke-width="3"/>
+    <path d="M20 59c12 0 19-7 21-18-11.5-1-19.5 5-21 18Z" fill="#C89A3D" stroke-width="3"/>
+  </g>
+</svg>

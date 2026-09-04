@@ -72,7 +72,11 @@ const RedefinirSenha = () => {
   };
 
   return (
-    <AuthShell tagline="Seu trabalho continua. Seu acesso também.">
+    <AuthShell
+      image="/assets/backgrounds/auth-recovery-irrigation.png"
+      imagePosition="55% 50%"
+      tagline="Seu trabalho continua. Seu acesso também."
+    >
       <span className={`${form.eyebrow} ${form.brass}`}>Segurança da conta</span>
       <h1 className={form.title}>Crie uma nova senha</h1>
 

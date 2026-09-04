@@ -20,7 +20,8 @@
 .panelScrim {
   position: absolute;
   inset: 0;
-  background-color: rgb(12 48 39 / 0.42);
+  /* Overlay funcional de contraste sobre a fotografia (README dos assets). */
+  background: linear-gradient(180deg, rgb(12 48 39 / 0.3), rgb(12 48 39 / 0.72));
 }
 
 .panelContent {

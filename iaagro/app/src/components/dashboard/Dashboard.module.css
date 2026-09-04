@@ -371,10 +371,20 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   min-height: 240px;
   color: var(--color-ink-muted);
   text-align: center;
+}
+.emptyChart strong {
+  color: var(--color-ink);
+  font-size: 15px;
+}
+.emptyArt {
+  width: 132px;
+  height: auto;
+  margin-bottom: var(--space-2);
+  opacity: 0.95;
 }
 
 /* Tooltip do gráfico */
