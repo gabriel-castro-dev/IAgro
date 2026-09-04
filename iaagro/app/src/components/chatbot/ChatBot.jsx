@@ -1,203 +1,175 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../authContext';
 import { ChatbotController } from '../../controllers/ChatbotController';
-import ChatMessage from './ChatMessage';
+import { LuSparkles, LuX, LuSend, LuArrowUpRight, LuTrendingUp, LuDollarSign, LuDroplet } from 'react-icons/lu';
 import styles from './Chatbot.module.css';
 
-const Chatbot = () => {
+const QUICK_ACTIONS = [
+  { icon: LuTrendingUp, label: 'Analisar produtividade', prompt: 'Analise minha produtividade recente e aponte melhorias.' },
+  { icon: LuDollarSign, label: 'Revisar custos', prompt: 'Onde posso reduzir custos na minha produção?' },
+  { icon: LuDroplet, label: 'Planejar irrigação', prompt: 'Como devo planejar a irrigação com o clima atual?' },
+];
+
+const Assistant = () => {
   const { currentUser } = useAuth();
+  const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const messagesEndRef = useRef(null);
-  
-  const chatbotController = new ChatbotController();
+  const [failed, setFailed] = useState(null);
+  const endRef = useRef(null);
+  const inputRef = useRef(null);
+  const triggerRef = useRef(null);
 
-  // Auto-scroll para última mensagem
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const controller = useRef(new ChatbotController()).current;
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, loading]);
 
-  // Carregar histórico de conversas
   useEffect(() => {
-    if (currentUser && isOpen) {
-      loadChatHistory();
+    if (open && currentUser?.uid) {
+      controller.loadChatHistory(currentUser.uid).then((res) => {
+        if (res.success) setMessages(res.data);
+      });
+      setTimeout(() => inputRef.current?.focus(), 60);
     }
-  }, [currentUser, isOpen]);
+  }, [open, currentUser, controller]);
 
-  const loadChatHistory = async () => {
-    try {
-      const result = await chatbotController.loadChatHistory(currentUser.uid);
-      if (result.success) {
-        setMessages(result.data);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar histórico:', error);
-    }
+  // Esc fecha e devolve o foco ao trigger
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === 'Escape') close(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  const close = () => {
+    setOpen(false);
+    setTimeout(() => triggerRef.current?.focus(), 0);
   };
 
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    
-    if (!inputMessage.trim() || loading) return;
-
-    const userMessage = {
-      id: Date.now(),
-      text: inputMessage,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
+  const send = async (text) => {
+    const message = (text ?? input).trim();
+    if (!message || loading) return;
+    setFailed(null);
+    const userMsg = { id: `u-${Date.now()}`, text: message, sender: 'user', timestamp: new Date() };
+    setMessages((m) => [...m, userMsg]);
+    setInput('');
     setLoading(true);
-
     try {
-      const result = await chatbotController.sendMessage(
-        currentUser.uid,
-        inputMessage
-      );
-
-      if (result.success) {
-        const aiMessage = {
-          id: Date.now() + 1,
-          text: result.data.response,
-          sender: 'ai',
-          timestamp: new Date(result.data.timestamp),
-        };
-        setMessages(prev => [...prev, aiMessage]);
+      const res = await controller.sendMessage(currentUser.uid, message);
+      if (res.success) {
+        setMessages((m) => [...m, { id: `a-${Date.now()}`, text: res.data.response, sender: 'ai', timestamp: new Date(res.data.timestamp) }]);
       } else {
-        throw new Error(result.error);
+        setFailed(message);
+        setMessages((m) => [...m, { id: `e-${Date.now()}`, text: res.error || 'Não foi possível responder agora.', sender: 'ai', isError: true, timestamp: new Date() }]);
       }
-    } catch (error) {
-      console.error('Erro ao enviar mensagem:', error);
-      const errorMessage = {
-        id: Date.now() + 1,
-        text: 'Desculpe, ocorreu um erro. Tente novamente.',
-        sender: 'ai',
-        timestamp: new Date(),
-        isError: true,
-      };
-      setMessages(prev => [...prev, errorMessage]);
+    } catch (err) {
+      setFailed(message);
+      setMessages((m) => [...m, { id: `e-${Date.now()}`, text: 'Erro ao processar. Tente novamente.', sender: 'ai', isError: true, timestamp: new Date() }]);
     } finally {
       setLoading(false);
     }
   };
 
-  const quickActions = [
-    { icon: '🌾', text: 'O que plantar agora?', action: 'Baseado no clima atual, quais culturas são mais adequadas para plantar?' },
-    { icon: '📊', text: 'Analisar meu histórico', action: 'Analise meu histórico de plantio e sugira melhorias' },
-    { icon: '☀️', text: 'Análise climática', action: 'Como está o clima para atividades agrícolas hoje?' },
-    { icon: '💰', text: 'Otimizar custos', action: 'Como posso reduzir custos na minha produção?' },
-  ];
-
-  const handleQuickAction = (action) => {
-    setInputMessage(action);
+  const onKeyDown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
   };
 
   return (
     <>
-      {/* Botão flutuante */}
-      <button 
-        className={`${styles.floatingButton} ${isOpen ? styles.open : ''}`}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Abrir chatbot"
+      <button
+        ref={triggerRef}
+        className={styles.trigger}
+        onClick={() => setOpen(true)}
+        aria-label="Abrir assistente"
+        aria-expanded={open}
       >
-        {isOpen ? '✕' : '💬'}
+        <LuSparkles size={22} aria-hidden="true" />
+        <span className={styles.triggerLabel}>Assistente</span>
       </button>
 
-      {/* Container do chat */}
-      {isOpen && (
-        <div className={styles.chatContainer}>
-          {/* Header */}
-          <div className={styles.chatHeader}>
-            <div className={styles.headerInfo}>
-              <div className={styles.headerIcon}>🤖</div>
-              <div>
-                <h3>Assistente IAgro</h3>
-                <span className={styles.headerStatus}>
-                  {loading ? 'Digitando...' : 'Online'}
-                </span>
-              </div>
-            </div>
-            <button 
-              onClick={() => setIsOpen(false)}
-              className={styles.closeButton}
-            >
-              ✕
-            </button>
-          </div>
-
-          {/* Mensagens */}
-          <div className={styles.messagesContainer}>
-            {messages.length === 0 ? (
-              <div className={styles.welcomeMessage}>
-                <h4>👋 Olá! Como posso ajudar?</h4>
-                <p>Estou aqui para:</p>
-                <ul>
-                  <li>🌾 Sugerir culturas adequadas</li>
-                  <li>📊 Analisar seu histórico</li>
-                  <li>☀️ Interpretar dados climáticos</li>
-                  <li>💡 Dar dicas de manejo</li>
-                </ul>
-                
-                <div className={styles.quickActionsGrid}>
-                  {quickActions.map((qa, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleQuickAction(qa.action)}
-                      className={styles.quickActionButton}
-                    >
-                      <span>{qa.icon}</span>
-                      <span>{qa.text}</span>
-                    </button>
-                  ))}
+      {open && (
+        <div className={styles.overlay}>
+          <div className={styles.backdrop} onClick={close} aria-hidden="true" />
+          <aside className={styles.panel} role="dialog" aria-modal="true" aria-labelledby="assistant-title">
+            <header className={styles.head}>
+              <div className={styles.headInfo}>
+                <span className={styles.headIcon} aria-hidden="true"><LuSparkles size={20} /></span>
+                <div>
+                  <h2 id="assistant-title" className={styles.headTitle}>Assistente agronômico</h2>
+                  <span className={styles.status}>{loading ? 'Digitando…' : 'Disponível'}</span>
                 </div>
               </div>
-            ) : (
-              messages.map(msg => (
-                <ChatMessage key={msg.id} message={msg} />
-              ))
-            )}
-            
-            {loading && (
-              <div className={styles.typingIndicator}>
-                <span></span>
-                <span></span>
-                <span></span>
+              <button className={styles.close} onClick={close} aria-label="Fechar assistente"><LuX size={20} /></button>
+            </header>
+
+            <div className={styles.context}>Usando dados da sua propriedade</div>
+
+            <div className={styles.messages} aria-live="polite">
+              {messages.length === 0 && !loading && (
+                <div className={styles.welcome}>
+                  <p>Bom dia. Posso analisar seus registros, clima e tarefas da propriedade.</p>
+                </div>
+              )}
+
+              {messages.map((m) => (
+                <div key={m.id} className={`${styles.msg} ${m.sender === 'user' ? styles.msgUser : styles.msgAi} ${m.isError ? styles.msgError : ''}`}>
+                  {m.text}
+                </div>
+              ))}
+
+              {loading && (
+                <div className={`${styles.msg} ${styles.msgAi}`}>
+                  <span className={styles.typing}><span /><span /><span /></span>
+                </div>
+              )}
+
+              {failed && !loading && (
+                <button className={styles.retry} onClick={() => send(failed)}>Tentar novamente</button>
+              )}
+
+              <div ref={endRef} />
+            </div>
+
+            {messages.length === 0 && (
+              <div className={styles.quick}>
+                <span className={styles.quickTitle}>Ações rápidas</span>
+                {QUICK_ACTIONS.map(({ icon: Icon, label, prompt }) => (
+                  <button key={label} className={styles.quickBtn} onClick={() => send(prompt)}>
+                    <Icon size={18} aria-hidden="true" />
+                    <span>{label}</span>
+                    <LuArrowUpRight size={16} className={styles.quickArrow} aria-hidden="true" />
+                  </button>
+                ))}
               </div>
             )}
-            
-            <div ref={messagesEndRef} />
-          </div>
 
-          {/* Input */}
-          <form onSubmit={sendMessage} className={styles.inputContainer}>
-            <input
-              type="text"
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              placeholder="Digite sua pergunta..."
-              className={styles.input}
-              disabled={loading}
-            />
-            <button 
-              type="submit" 
-              className={styles.sendButton}
-              disabled={loading || !inputMessage.trim()}
-            >
-              {loading ? '⏳' : '📤'}
-            </button>
-          </form>
+            <form className={styles.composer} onSubmit={(e) => { e.preventDefault(); send(); }}>
+              <textarea
+                ref={inputRef}
+                className={styles.input}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={onKeyDown}
+                placeholder="Pergunte sobre sua propriedade"
+                rows={1}
+                aria-label="Mensagem para o assistente"
+              />
+              <button type="submit" className={styles.sendBtn} disabled={!input.trim() || loading} aria-label="Enviar">
+                <LuSend size={18} />
+              </button>
+            </form>
+            <p className={styles.disclaimer}>Confirme decisões críticas com um profissional habilitado.</p>
+          </aside>
         </div>
       )}
     </>
   );
 };
 
-export default Chatbot;
+export default Assistant;
