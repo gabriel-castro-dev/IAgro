@@ -38,7 +38,11 @@ const Login = () => {
   };
 
   return (
-    <AuthShell tagline="Decisões melhores começam no campo.">
+    <AuthShell
+      image="/assets/backgrounds/auth-login-field.png"
+      imagePosition="50% 55%"
+      tagline="Decisões melhores começam no campo."
+    >
       {userLoggedIn && <Navigate to="/home" replace={true} />}
 
       <span className={`${form.eyebrow} ${form.green}`}>Bem-vindo de volta</span>

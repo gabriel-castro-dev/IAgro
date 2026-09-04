@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Símbolo IAgro</title>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 56V18" stroke="#164C3B" stroke-width="3.5"/>
+    <path d="M32 25C24 25 18.5 20.5 17 13c7.8-.7 13.7 3.5 15 12Z" fill="#789269" stroke="#164C3B" stroke-width="2.5"/>
+    <path d="M32 34c8 0 13.5-4.5 15-12-7.8-.7-13.7 3.5-15 12Z" fill="#C89A3D" stroke="#164C3B" stroke-width="2.5"/>
+    <path d="M11 45c6.4-5.4 13.4-8.1 21-8.1S46.6 39.6 53 45" stroke="#164C3B" stroke-width="3"/>
+    <path d="M13.5 51c5.7-4.5 11.9-6.8 18.5-6.8S44.8 46.5 50.5 51" stroke="#789269" stroke-width="3"/>
+    <path d="M19 56c4.1-2.9 8.4-4.3 13-4.3S40.9 53.1 45 56" stroke="#164C3B" stroke-width="3"/>
+  </g>
+</svg>

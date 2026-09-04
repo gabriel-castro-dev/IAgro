@@ -13,12 +13,16 @@ import styles from './AuthShell.module.css';
  *  - brandBottom: se true, marca+tagline ficam na base (login usa marca no topo)
  *  - children: conteúdo do formulário
  */
-const AuthShell = ({ image, tagline, children }) => {
+const AuthShell = ({ image, imagePosition = 'center', tagline, children }) => {
   return (
     <div className={styles.shell}>
       <aside
         className={styles.panel}
-        style={image ? { backgroundImage: `url(${image})` } : undefined}
+        style={
+          image
+            ? { backgroundImage: `url(${image})`, backgroundPosition: imagePosition }
+            : undefined
+        }
       >
         <div className={styles.panelScrim} aria-hidden="true" />
         <div className={styles.panelContent}>

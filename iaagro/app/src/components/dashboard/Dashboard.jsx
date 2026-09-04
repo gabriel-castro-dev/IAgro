@@ -389,8 +389,13 @@ const Stat = ({ icon, label, value, unit, hint }) => (
 
 const EmptyChart = ({ onNavigate }) => (
   <div className={styles.emptyChart}>
-    <LuTrendingUp size={28} aria-hidden="true" />
-    <p>Sem dados suficientes para o gráfico.</p>
+    <img
+      src="/assets/illustrations/empty-field.svg"
+      alt=""
+      className={styles.emptyArt}
+    />
+    <strong>Ainda sem dados para o gráfico</strong>
+    <p>Registre plantios, custos e colheitas para ver a evolução aqui.</p>
     <Button variant="secondary" size="sm" onClick={() => onNavigate('meus-dados')}>
       Criar registro
     </Button>

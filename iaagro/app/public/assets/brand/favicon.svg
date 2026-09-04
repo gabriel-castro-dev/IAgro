@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="IAgro">
+  <rect width="64" height="64" rx="15" fill="#123D31"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M32 52V16" stroke="#F6F3EA" stroke-width="3.5"/>
+    <path d="M32 24c-7.2 0-12.2-4.1-13.5-10.7C25.5 12.7 30.8 16.4 32 24Z" fill="#789269" stroke="#F6F3EA" stroke-width="2.4"/>
+    <path d="M32 32c7.2 0 12.2-4.1 13.5-10.7C38.5 20.7 33.2 24.4 32 32Z" fill="#C89A3D" stroke="#F6F3EA" stroke-width="2.4"/>
+    <path d="M13 43c5.8-4.8 12.1-7.2 19-7.2S45.2 38.2 51 43" stroke="#F6F3EA" stroke-width="2.8"/>
+    <path d="M17 50c4.6-3.4 9.6-5.1 15-5.1S42.4 46.6 47 50" stroke="#A6B99A" stroke-width="2.8"/>
+  </g>
+</svg>

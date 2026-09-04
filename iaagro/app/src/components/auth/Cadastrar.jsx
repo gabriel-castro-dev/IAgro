@@ -57,7 +57,11 @@ const Cadastrar = () => {
   };
 
   return (
-    <AuthShell tagline="Gestão simples para uma lavoura mais previsível.">
+    <AuthShell
+      image="/assets/backgrounds/auth-register-farmer.png"
+      imagePosition="48% 50%"
+      tagline="Gestão simples para uma lavoura mais previsível."
+    >
       {userLoggedIn && <Navigate to="/home" replace={true} />}
 
       <span className={`${form.eyebrow} ${form.brass}`}>Comece agora</span>

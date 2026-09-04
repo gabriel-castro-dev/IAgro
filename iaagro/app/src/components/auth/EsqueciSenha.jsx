@@ -52,7 +52,11 @@ const EsqueciSenha = () => {
   };
 
   return (
-    <AuthShell tagline="Tecnologia para decisões que respeitam o campo.">
+    <AuthShell
+      image="/assets/backgrounds/auth-recovery-irrigation.png"
+      imagePosition="55% 50%"
+      tagline="Tecnologia para decisões que respeitam o campo."
+    >
       <Link to="/" className={form.backLink}>
         <LuArrowLeft size={18} aria-hidden="true" />
         Voltar ao login

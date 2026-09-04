@@ -1,46 +1,4 @@
 .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
+  display: inline-block;
   user-select: none;
-}
-
-.word {
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-/* Símbolo */
-.leaf {
-  fill: var(--color-moss);
-}
-.leafAlt {
-  fill: var(--color-forest-800);
-}
-.stem {
-  stroke: var(--color-forest-800);
-}
-.row {
-  stroke: var(--color-moss);
-}
-
-/* Tom sobre fundo escuro/foto */
-.light .word {
-  color: #ffffff;
-}
-.light .leaf {
-  fill: #a7c49a;
-}
-.light .leafAlt {
-  fill: #d7e6cf;
-}
-.light .stem,
-.light .row {
-  stroke: #cfe0c5;
-}
-
-/* Tom sobre fundo claro */
-.dark .word {
-  color: var(--color-forest-900);
 }
