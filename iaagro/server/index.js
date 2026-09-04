@@ -21,11 +21,11 @@ exports.chatWithAI = functions.https.onCall(async (data, context) => {
   try {
    
     const userDoc = await admin.firestore()
-      .collection('users')
+      .collection('userProfiles')
       .doc(userId)
       .get();
-    
-    const userData = userDoc.data();
+
+    const userData = userDoc.data() || {};
 
 
     const historicoSnapshot = await admin.firestore()
