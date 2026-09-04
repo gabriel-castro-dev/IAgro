@@ -1,74 +1,74 @@
-# 🌱 IAgro - Sistema de Gestão Agronômica Inteligente
+# IAgro - Sistema de Gestão Agronômica Inteligente
 
-**👥 Integrantes do Grupo:**
-- Gabriel Castro Inacio - 12300543  
-- Guilherme Kaab - 12301230  
-- Matheus Brum - 12303046  
-- Vitor Zamana - 12301205  
-- Giovanna Limotyrakis - 12302392  
-- Mateus Crespo Marra - 1230144  
-- Bernardo Agostinho de Freitas - 22403213  
+**Integrantes do Grupo:**
+- Gabriel Castro Inacio - 12300543
+- Guilherme Kaab - 12301230
+- Matheus Brum - 12303046
+- Vitor Zamana - 12301205
+- Giovanna Limotyrakis - 12302392
+- Mateus Crespo Marra - 1230144
+- Bernardo Agostinho de Freitas - 22403213
 
-**Turma:** [3B1]  
+**Turma:** [3B1]
 
 ---
 
-## 📋 Sobre o Projeto
-O **IAgro** é uma plataforma digital desenvolvida com o objetivo de auxiliar agricultores de micro e médio porte no **controle, análise e tomada de decisão** sobre suas lavouras.  
+## Sobre o Projeto
+O **IAgro** é uma plataforma digital desenvolvida com o objetivo de auxiliar agricultores de micro e médio porte no **controle, análise e tomada de decisão** sobre suas lavouras.
 A proposta central é oferecer uma ferramenta **inteligente, acessível e personalizada**, integrando:
 
-- Dados agronômicos  
-- Históricos de produção  
-- Alertas climáticos  
-- Recomendações técnicas com apoio de **Inteligência Artificial**  
+- Dados agronômicos
+- Históricos de produção
+- Alertas climáticos
+- Recomendações técnicas com apoio de **Inteligência Artificial**
 
 ---
 
-## 🎯 Objetivo
+## Objetivo
 O projeto visa **empoderar pequenos e médios produtores** com tecnologia de ponta para:
 
-- 📊 Acompanhar desempenho das lavouras  
-- 🌦️ Receber alertas climáticos e de pragas  
-- 🤖 Obter recomendações técnicas personalizadas  
-- 🌱 Compartilhar boas práticas e interagir com a comunidade agrícola  
-- 📈 Tomar decisões baseadas em dados, dashboards e relatórios  
+- Acompanhar desempenho das lavouras
+- Receber alertas climáticos e de pragas
+- Obter recomendações técnicas personalizadas
+- Compartilhar boas práticas e interagir com a comunidade agrícola
+- Tomar decisões baseadas em dados, dashboards e relatórios
 
 ---
 
-## 🌾 Contexto
+## Contexto
 O setor agrícola enfrenta desafios na adoção de tecnologia acessível. O IAgro busca:
 
-- Reduzir a distância entre produtor e informação qualificada  
-- Facilitar o uso de **IA na agricultura de precisão**  
-- Criar uma comunidade de troca de conhecimento agrícola  
+- Reduzir a distância entre produtor e informação qualificada
+- Facilitar o uso de **IA na agricultura de precisão**
+- Criar uma comunidade de troca de conhecimento agrícola
 
 ---
 
-## 🏗️ Especificações Técnicas
+## Especificações Técnicas
 
-### 🎨 Front-end
+### Front-end
 - Framework: **React.js**
-- Componentização reutilizável  
+- Componentização reutilizável
 - Recharts (Gráficos e vizualização)
-- Integração com APIs externas (clima, recomendações, etc.)  
-- Rotas protegidas para usuários autenticados  
+- Integração com APIs externas (clima, recomendações, etc.)
+- Rotas protegidas para usuários autenticados
 
-### ⚙️ Back-end
-- Ambiente: **Node.js**  
-- API RESTful para comunicação entre front, DB e serviços externos  
-- Segurança: **Firebase Authentication**  
+### Back-end
+- Ambiente: **Node.js**
+- API RESTful para comunicação entre front, DB e serviços externos
+- Segurança: **Firebase Authentication**
 
-### 🗄️ Banco de Dados e Autenticação
-- Plataforma: **Firebase**  
-- Firestore: armazenamento em tempo real  
-- Authentication: login seguro e redefinição de senha  
-- EmailJS: notificações em tempo real  
+### Banco de Dados e Autenticação
+- Plataforma: **Firebase**
+- Firestore: armazenamento em tempo real
+- Authentication: login seguro e redefinição de senha
+- EmailJS: notificações em tempo real
 
-### 🗄️ Inteligência Artificial
+### Inteligência Artificial
 - Google Gemini AI
 ---
 
-## 🏛️ Arquitetura MVC + Repository Pattern
+## Arquitetura MVC + Repository Pattern
 ```
 src/
 ├── authContext/
@@ -141,40 +141,40 @@ src/
 - Simplifica operações complexas do Firebase
 - Interface única para múltiplos serviços
 
-## ✅ Checklist de Funcionalidades
+## Checklist de Funcionalidades
 
 ### Funcionalidades Obrigatórias
-- [x] Cadastro de usuários  
-- [x] Login com autenticação  
-- [x] Redefinição de senha  
-- [x] Notificações de lembrete (climáticas, agrícolas)  
-- [x] Histórico de atividades  
-- [x] Configurações personalizáveis  
-- [x] Dashboard com métricas de uso  
+- [x] Cadastro de usuários
+- [x] Login com autenticação
+- [x] Redefinição de senha
+- [x] Notificações de lembrete (climáticas, agrícolas)
+- [x] Histórico de atividades
+- [x] Configurações personalizáveis
+- [x] Dashboard com métricas de uso
 - [x] Calculadora Inteligente de Produtividade
-- [x] Calculadora Inteligente de Irrigação 
-- [x] Exportação de relatórios em PDF  
-- [x] Lista de tarefas  
-- [x] Cadastro de Culturas, Insumos e Boas Práticas  
-- [x] Busca de endereço por CEP  
-- [x] Interação IA ↔ Usuário  
-- [x] Notificações por E-mail  
-- [x] Integração com APIs de previsão do tempo  
-- [x] Backup de dados para cliente  
-- [x] Atualização automática de recomendações  
-- [x] Relatórios de produtividade por período   
-- [x] Recomendação de itens para compra  
+- [x] Calculadora Inteligente de Irrigação
+- [x] Exportação de relatórios em PDF
+- [x] Lista de tarefas
+- [x] Cadastro de Culturas, Insumos e Boas Práticas
+- [x] Busca de endereço por CEP
+- [x] Interação IA ↔ Usuário
+- [x] Notificações por E-mail
+- [x] Integração com APIs de previsão do tempo
+- [x] Backup de dados para cliente
+- [x] Atualização automática de recomendações
+- [x] Relatórios de produtividade por período
+- [x] Recomendação de itens para compra
 
 ---
 
-## 🚀 Como Executar o Projeto
+## Como Executar o Projeto
 
-### 📋 Pré-requisitos
-- Node.js **16+**  
-- NPM ou Yarn  
-- Conta Firebase configurada  
+### Pré-requisitos
+- Node.js **16+**
+- NPM ou Yarn
+- Conta Firebase configurada
 
-### 🔧 Instalação
+### Instalação
 1. Clone o repositório:
    ```
    git clone https://github.com/gabriel-castro-dev/IAgro.git
@@ -191,10 +191,10 @@ src/
       REACT_APP_FIREBASE_MESSAGING_SENDER_ID=seu_sender_id
       REACT_APP_FIREBASE_APP_ID=seu_app_id
       REACT_APP_WEATHER_API_KEY=sua_weather_api_key
-4.Execute o projeto:  
+4.Execute o projeto:
 ```
       npm start
       Acesse em: http://localhost:3000
 ```
 
-# 🌱 IAgro - Tecnologia a serviço da agricultura sustentável 🚀
+# IAgro - Tecnologia a serviço da agricultura sustentável
