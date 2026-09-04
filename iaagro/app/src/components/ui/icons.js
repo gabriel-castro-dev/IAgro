@@ -16,4 +16,11 @@ export {
   LuTriangleAlert,
   LuInfo,
   LuX,
+  LuFileText,
+  LuLaptop,
+  LuLock,
+  LuUser,
+  LuMail,
+  LuLeaf,
+  LuChevronRight,
 } from 'react-icons/lu';
