@@ -8,6 +8,7 @@ import Dashboard from './dashboard/Dashboard';
 import RegistroWizard from './registro/RegistroWizard';
 import Analises from './analises/Analises';
 import Historico from './historico/Historico';
+import Perfil from './perfil/Perfil';
 import { 
     getUserProfile, 
     saveUserProfile, 
@@ -509,6 +510,17 @@ const handleCEPChange = async (e) => {
             return { success: true };
         } catch (error) {
             console.error('Erro ao salvar registro:', error);
+            return { success: false, error: error.message };
+        }
+    };
+
+    // Salvar perfil a partir do componente Perfil (retorna {success})
+    const handleProfileSave = async () => {
+        try {
+            const result = await userController.saveUserProfile(currentUser.uid, profileSettings);
+            return result?.success ? { success: true } : { success: false, error: result?.error };
+        } catch (error) {
+            console.error('Erro ao salvar perfil:', error);
             return { success: false, error: error.message };
         }
     };
@@ -1316,8 +1328,20 @@ const handleCEPChange = async (e) => {
                             </div>
                         )}
 
-                        {/* PERFIL COM CEP AUTOMÁTICO */}
                         {currentPage === 'perfil' && (
+                            <Perfil
+                                profile={profileSettings}
+                                onChange={handleProfileChange}
+                                onSave={handleProfileSave}
+                                theme={theme}
+                                onThemeChange={handleThemeChange}
+                                email={currentUser?.email || profileSettings.email || ''}
+                                onLogout={handleLogout}
+                            />
+                        )}
+
+                        {/* PERFIL COM CEP AUTOMÁTICO (legado) */}
+                        {false && (
                             <div className={styles.profileContainer}>
                                 <h2 className={styles.formTitle}>Configurações do Perfil</h2>
                                 <form onSubmit={saveProfileSettingsHandler} className={styles.profileForm}>

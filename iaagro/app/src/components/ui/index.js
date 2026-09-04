@@ -6,5 +6,6 @@ export { default as Checkbox } from './Checkbox';
 export { default as InlineAlert } from './InlineAlert';
 export { default as StatusTag } from './StatusTag';
 export { default as Drawer } from './Drawer';
+export { default as Switch } from './Switch';
 export { default as Spinner } from './Spinner';
 export { default as Brand } from './Brand';
