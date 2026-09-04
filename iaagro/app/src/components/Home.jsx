@@ -5,6 +5,7 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import ChatBot from './chatbot/ChatBot.jsx';
 import AppShell from './shell/AppShell';
 import Dashboard from './dashboard/Dashboard';
+import RegistroWizard from './registro/RegistroWizard';
 import { 
     getUserProfile, 
     saveUserProfile, 
@@ -495,6 +496,21 @@ const handleCEPChange = async (e) => {
         }
     };
 
+    // Salvar registro vindo do RegistroWizard (retorna {success})
+    const handleRegistroSubmit = async (data) => {
+        if (!currentUser?.uid) {
+            return { success: false, error: 'Usuário não identificado' };
+        }
+        try {
+            await saveAgronomicalData(currentUser.uid, data);
+            await loadHistoricoData();
+            return { success: true };
+        } catch (error) {
+            console.error('Erro ao salvar registro:', error);
+            return { success: false, error: error.message };
+        }
+    };
+
     const saveProfileSettingsHandler = async (e) => {
         e.preventDefault();
         
@@ -854,6 +870,17 @@ const handleCEPChange = async (e) => {
 
                         {/* Meus Dados - permanece igual */}
                         {currentPage === 'meus-dados' && (
+                            <RegistroWizard
+                                profile={profileSettings}
+                                userName={profileSettings.nomeCompleto || userName}
+                                propertyName={profileSettings.propriedadeRural || profileSettings.cidade || ''}
+                                onSubmit={handleRegistroSubmit}
+                                onCancel={() => goToPage('dashboard')}
+                                onGoHistorico={() => goToPage('historico')}
+                            />
+                        )}
+
+                        {false && (
                             <div className={styles.formContainer}>
                                 <h2 className={styles.formTitle}>Adicionar Dados Agronômicos</h2>
                                 <form onSubmit={saveAgronomicalDataHandler} className={styles.form}>

@@ -64,6 +64,47 @@ textarea.input {
   line-height: 1.5;
 }
 
+/* Select */
+select.input {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 44px;
+  cursor: pointer;
+  background-color: var(--color-surface);
+}
+.selectWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.selectChevron {
+  position: absolute;
+  right: var(--space-4);
+  pointer-events: none;
+  color: var(--color-ink-muted);
+}
+
+/* Adornos de prefixo/sufixo (moeda, unidades) */
+.hasPrefix .input {
+  padding-left: 44px;
+}
+.hasSuffix .input {
+  padding-right: 64px;
+}
+.prefix,
+.suffix {
+  position: absolute;
+  color: var(--color-ink-muted);
+  font-size: 15px;
+  pointer-events: none;
+}
+.prefix {
+  left: var(--space-4);
+}
+.suffix {
+  right: var(--space-4);
+}
+
 /* Campo com botão à direita (senha) */
 .hasTrailing .input {
   padding-right: 48px;

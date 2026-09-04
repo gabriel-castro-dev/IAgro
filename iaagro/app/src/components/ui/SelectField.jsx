@@ -1,42 +1,19 @@
 import React, { useId } from 'react';
-import { LuTriangleAlert } from './icons';
+import { LuChevronDown, LuTriangleAlert } from './icons';
 import styles from './field.module.css';
 
 /**
- * Campo de texto com label persistente, hint e erro ligado por ARIA.
- * `multiline` renderiza textarea.
+ * Select com label persistente e erro por ARIA. `options`: [{value, label}].
  */
-const TextField = React.forwardRef(function TextField(
-  {
-    label,
-    id,
-    error,
-    hint,
-    required = false,
-    multiline = false,
-    prefix,
-    suffix,
-    className = '',
-    ...rest
-  },
+const SelectField = React.forwardRef(function SelectField(
+  { label, id, error, hint, required = false, options = [], placeholder, className = '', children, ...rest },
   ref
 ) {
   const autoId = useId();
   const fieldId = id || autoId;
   const errorId = `${fieldId}-error`;
   const hintId = `${fieldId}-hint`;
-  const describedBy = [error ? errorId : null, hint ? hintId : null]
-    .filter(Boolean)
-    .join(' ') || undefined;
-
-  const Control = multiline ? 'textarea' : 'input';
-  const controlCls = [
-    styles.control,
-    prefix ? styles.hasPrefix : '',
-    suffix ? styles.hasSuffix : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const describedBy = [error ? errorId : null, hint ? hintId : null].filter(Boolean).join(' ') || undefined;
 
   return (
     <div className={`${styles.field} ${error ? styles.invalid : ''} ${className}`}>
@@ -46,9 +23,8 @@ const TextField = React.forwardRef(function TextField(
           {required && <span className={styles.required} aria-hidden="true">*</span>}
         </label>
       )}
-      <div className={controlCls}>
-        {prefix && <span className={styles.prefix} aria-hidden="true">{prefix}</span>}
-        <Control
+      <div className={styles.selectWrap}>
+        <select
           ref={ref}
           id={fieldId}
           className={styles.input}
@@ -56,8 +32,20 @@ const TextField = React.forwardRef(function TextField(
           aria-describedby={describedBy}
           required={required}
           {...rest}
-        />
-        {suffix && <span className={styles.suffix} aria-hidden="true">{suffix}</span>}
+        >
+          {placeholder && (
+            <option value="" disabled>
+              {placeholder}
+            </option>
+          )}
+          {options.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+          {children}
+        </select>
+        <LuChevronDown size={18} className={styles.selectChevron} aria-hidden="true" />
       </div>
       {hint && !error && (
         <span id={hintId} className={styles.hint}>
@@ -74,4 +62,4 @@ const TextField = React.forwardRef(function TextField(
   );
 });
 
-export default TextField;
+export default SelectField;
